@@ -2,6 +2,24 @@ import productsData from "./data/productsData.js";
 
 
 
+//search 
+
+const searchIcon = document.querySelector(".search-icon");
+const searchContainer = document.querySelector(".search-container");
+const clearbtn = document.querySelector(".clear-search-btn");
+const overlay = document.querySelector(".search-overlay");
+
+searchIcon.addEventListener("click", () => {
+   searchContainer.classList.toggle("active");
+    overlay.classList.toggle("active");
+});
+clearbtn.addEventListener("click", () => {
+  searchContainer.classList.remove("active");
+   overlay.classList.remove("active");
+});
+
+
+
 // banner carousel
 $(document).ready(function (){
   $('.banner-carousel').owlCarousel({
@@ -125,10 +143,12 @@ function displayTopProducts(productArray){
 
   topProductsRow.innerHTML += `
      <div class="col-lg-3 col-md-4">
-        <div class="browse-box">
-            <p>browse all products <span><i class="fa-solid fa-arrow-right"></i></span></p>
-        </div>
-      </div>
+      <a href="./all-product.html">
+          <div class="browse-box">
+              <p>browse all products <span><i class="fa-solid fa-arrow-right"></i></span></p>
+          </div>
+      </a>
+    </div>
   `
 }
 
