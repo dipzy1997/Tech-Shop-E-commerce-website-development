@@ -3,6 +3,11 @@
     padding: 0;
     box-sizing: border-box;
 }
+::selection, ::-moz-selection { 
+    background: var(--red);
+    color: #fff;
+    text-shadow: none;
+}
 ul li{
     list-style-type: none !important;
 }
@@ -19,6 +24,8 @@ img{
     --light-black:#161819;
     --grey-text: #a9afc3;
     --red:#ff0000;
+    --facebook:#1877F2;
+    --twitter: #1DA1F2;
     --discount-price-text-color:#6c757d;
     --roboto-font:'Roboto', sans-serif;
 }
@@ -202,7 +209,7 @@ img{
   color: var(--red);
   cursor: pointer;
 }
-.search-overlay{
+.search-overlay, .log-overlay{
     position: fixed;
     top: 0;
     left: 0;
@@ -214,10 +221,170 @@ img{
     transition: opacity 0.3s;
     z-index: 9999;
 }
-.search-overlay.active{
+.search-overlay.active, .log-overlay.active{
     opacity: 1;
     pointer-events: auto;
 }
+.user-icon{
+    position: relative;
+}
+.user-primary-box {
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    padding: 20px;
+    background-color: var(--light-black);
+    z-index: 9999;
+    border: 1px solid var(--grey-text);
+    border-radius: 5px;
+    width: 300px;
+    opacity: 0;
+    display: none;
+    transition: 0.3s ease-in-out;
+}
+.user-primary-box.active, .user-icon:hover .user-primary-box{
+    opacity: 1;
+    display: block;
+}
+.user-primary-box  h5, .user-primary-box  h6, .user-primary-box p, .login-box h4, .login-box h5, .log-dash p, .createAccount{
+    font-size: 20px;
+    text-transform: capitalize;
+    font-family: var(--roboto-font);
+    color: var(--grey-text);
+    font-weight: 600;
+}
+.user-primary-box  h6{
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+.user-primary-box p{
+    font-weight: 400;
+    font-size: 17px;
+    padding-top: 15px;
+    margin-bottom: 0;
+    border-top: 1px solid var(--grey-text);
+}
+.user-primary-box button{
+    padding: 7px 20px;
+    text-transform: capitalize;
+    background-color: transparent;
+    outline: none;
+    border: 1px solid var(--grey-text);
+    font-family: var(--roboto-font);
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    color: var(--grey-text);
+    transition: 0.3s ease-in-out;
+}
+.user-primary-box button:hover{
+    background-color: var(--red);
+    color: #fff;
+    border: 1px solid transparent;
+}
+.login-box, .signup-box{
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+    width: 500px;
+    height: auto;
+    background-color: var(--light-black);
+    padding: 60px;
+    border-radius: 5px;
+    display: none;
+    opacity: 0;
+}
+.login-box.active, .signup-box.active{
+    display: block;
+    opacity: 1;
+}
+.login-clear-btn{
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+}
+.login-clear-btn i{
+    color: var(--grey-text);
+    font-size: 18px;
+}
+.login-box h4{
+    font-size: 28px;
+}
+.login-box h5{
+    font-weight: 500;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+.createAccount{
+    font-size: 18px;
+    cursor: pointer;
+}
+.login-box input{
+    display: block;
+    border: 1px solid var(--discount-price-text-color);
+    border-radius: 3px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: var(--grey-text);
+    font-family: var(--roboto-font);
+    background: transparent;
+    width: 100%;
+    margin-bottom: 20px;
+
+}
+.login-box input::placeholder{
+    font-size: 16px;
+    color: var(--grey-text);
+    font-family: var(--roboto-font);
+    text-transform: capitalize;
+}
+.login-box input:focus{
+    background-color: transparent;
+    border: 1px solid var(--grey-text);
+    outline:none;
+}
+.login-box .red-btn{
+    width: 100%;
+}
+.log-dash{
+    margin-bottom: 30px;
+}
+.log-dash p{
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+.log-dash div{
+    width: 100px;
+    height: 1px;
+    background-color: var(--grey-text);
+}
+.login-social-btn button{
+    border: none;
+    outline: none;
+    margin-right: 5px;
+}
+.login-social-btn button a{
+    padding: 10px 25px;
+    color: #fff;
+    background-color: var(--facebook);
+    text-transform: capitalize;
+    font-size: 18px;
+}
+.login-g a{
+    background-color: var(--red) !important;
+}
+.login-twt a{
+    background-color: var(--twitter) !important;
+}
+
 
 /* navbar end */ 
 
@@ -1173,7 +1340,7 @@ footer{
     overflow-y: scroll;
     overflow-x: hidden;
     background-color: var(--light-black);
-    padding: 0 10px;
+    padding: 10px;
 }
 .product-filter-sec::-webkit-scrollbar {
     width: 6px;

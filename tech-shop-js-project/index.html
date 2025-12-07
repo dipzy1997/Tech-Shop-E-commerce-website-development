@@ -27,8 +27,8 @@
       <ul class="navbar-nav ms-auto d-flex align-items-center">
         
         <li class="nav-item search-box">
+            <div class="search-overlay"></div> 
             <i class="fa-solid fa-magnifying-glass search-icon" data-tooltip="Search"></i>
-                <div class="search-overlay"></div> 
                 <div class="search-container">
                     <input type="text" placeholder="Search for products..." id="navSearch">
                     <span class="clear-search-btn"><i class="fa-solid fa-xmark"></i></span>
@@ -44,15 +44,72 @@
           <a class="nav-link" href="./cart.html"><i class="fa-solid fa-cart-shopping" data-tooltip="Cart"></i></a>
           <span></span>
         </li>
+
         <li class="nav-item user-icon">
           <a class="nav-link" href="#"><i class="fa-regular fa-user"></i></a>
+
+          <div class="user-primary-box">
+            <h5>hello</h5>
+            <h6>Access account and manage orders</h6>
+            <button>Login / Signup</button>
+            <p>please login</p>
+          </div>
+
         </li>
+
       </ul>
     </div>
   </div>
 </nav>
 
 </header>
+
+<div class="log-overlay"></div>
+
+<!-- login box -->
+
+    <div class="login-box">
+        <span class="login-clear-btn"><i class="fa-solid fa-xmark"></i></span>
+        <h4>Login</h4>
+        <h5>new to tech-shop ? <span class="createAccount">create an account</span></h5>
+        <input type="email" name="" id="log-email" placeholder="email">
+        <input type="password" name="" id="log-pass" placeholder="password">
+        <button class="red-btn">login</button>
+        <div class="log-dash d-flex justify-content-between align-items-center mt-md-5 mt-sm-3">
+            <div></div>
+            <p>or login with</p>
+            <div></div>
+        </div>
+        <div class="login-social-btn">
+            <button class="login-fb"><a href="#">facebook</a></button>
+            <button class="login-g"><a href="#">google</a></button>
+            <button class="login-twt"><a href="#">twitter</a></button>
+        </div>
+    </div>
+
+    <!-- sign up box -->
+
+    <div class="login-box signup-box">
+        <span class="login-clear-btn sign-clear-btn"><i class="fa-solid fa-xmark"></i></span>
+        <h4>signup</h4>
+        <h5>already have an account ? <span class="createAccount signup-login">login</span></h5>
+        <input type="text" id="sign-user" placeholder="username">
+        <input type="email" name="" id="sign-email" placeholder="email">
+        <input type="password" name="" id="sign-pass" placeholder="password">
+        <input type="password" name="" id="sign-con-pass" placeholder="confirm password">
+
+        <button class="red-btn">signup</button>
+        <div class="log-dash d-flex justify-content-between align-items-center mt-md-5 mt-sm-3">
+            <div></div>
+            <p>or login with</p>
+            <div></div>
+        </div>
+        <div class="login-social-btn">
+            <button class="login-fb"><a href="#">facebook</a></button>
+            <button class="login-g"><a href="#">google</a></button>
+            <button class="login-twt"><a href="#">twitter</a></button>
+        </div>
+    </div>
    
 <!-- NAVBAR END -->
 

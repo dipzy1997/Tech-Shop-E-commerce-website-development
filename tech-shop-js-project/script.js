@@ -18,6 +18,48 @@ clearbtn.addEventListener("click", () => {
    overlay.classList.remove("active");
 });
 
+// user
+
+const userICon = document.querySelector(".user-icon a");
+const userPrimaryBox = document.querySelector(".user-primary-box");
+const userPrimaryBoxBtn = document.querySelector(".user-primary-box button");
+const loginClearBtn = document.querySelector(".login-clear-btn");
+const loginBox = document.querySelector(".login-box");
+const logoverlay = document.querySelector(".log-overlay");
+const createAccount = document.querySelector(".createAccount");
+const signupBox = document.querySelector(".signup-box");
+const signClearBtn = document.querySelector(".sign-clear-btn");
+const signupLogin = document.querySelector(".signup-login");
+
+
+userICon.addEventListener("click", ()=>{
+    userPrimaryBox.classList.toggle("active");
+});
+userPrimaryBoxBtn.addEventListener("click", ()=>{
+    loginBox.classList.toggle("active")
+    logoverlay.classList.toggle("active")
+});
+loginClearBtn.addEventListener("click", ()=>{
+    loginBox.classList.remove("active")
+    logoverlay.classList.remove("active")
+    userPrimaryBox.classList.remove("active")
+});
+createAccount.addEventListener("click", ()=>{
+    loginBox.classList.remove("active")
+    signupBox.classList.toggle("active")
+    logoverlay.classList.add("active")
+    userPrimaryBox.classList.remove("active")
+})
+signClearBtn.addEventListener("click", ()=>{
+    signupBox.classList.remove("active")
+    logoverlay.classList.remove("active")
+    userPrimaryBox.classList.remove("active")
+});
+signupLogin.addEventListener("click", ()=>{
+    loginBox.classList.toggle("active")
+    logoverlay.classList.add("active")
+    signupBox.classList.remove("active")
+})
 
 
 // banner carousel
