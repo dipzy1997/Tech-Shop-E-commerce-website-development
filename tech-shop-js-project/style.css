@@ -46,6 +46,34 @@ img{
 .red-btn:hover{
     background-color: #c00505;
 }
+/* back to top button start */
+#backToTop{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 9999;
+    background-color: var(--red);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+}
+#backToTop i{
+    color: #fff;
+    font-size: 22px;
+    font-weight: 600;
+}
+#backToTop:hover{
+    background-color: rgb(252, 47, 47);
+}
+#backToTop.active{
+    opacity: 1;
+}
+
+/* back to top button end */
+
 
 /* navbar start */
 

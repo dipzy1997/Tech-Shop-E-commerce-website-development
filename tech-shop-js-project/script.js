@@ -61,6 +61,19 @@ signupLogin.addEventListener("click", ()=>{
     signupBox.classList.remove("active")
 })
 
+// back to top button
+
+let backToTop = document.querySelector("#backToTop");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 100) {
+    backToTop.classList.add("active");
+  } 
+  else {
+    backToTop.classList.remove("active");
+  }
+});
+
 
 // banner carousel
 $(document).ready(function (){
