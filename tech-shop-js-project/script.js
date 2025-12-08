@@ -234,3 +234,50 @@ categorybtns.forEach((button)=>{
   })
   
 })
+
+// product searching on search bar
+
+const searchInput = document.querySelector("#navSearch");
+const suggestionBox = document.querySelector(".suggestions")
+
+searchInput.addEventListener("input", ()=>{
+  const searchInputValue = searchInput.value.toLowerCase();
+  suggestionBox.innerHTML = "";
+  if(searchInputValue === "") {
+    suggestionBox.classList.remove("active");
+    return;
+  }
+
+  let matchFound = false; // ✅ to track if any result exists
+
+  productsData.forEach((product)=>{
+    if(product.title.toLowerCase().includes(searchInputValue)){
+        matchFound = true;
+        const li = document.createElement("li");
+        li.textContent = product.title;
+        suggestionBox.classList.add("active");
+
+        li.addEventListener("click", ()=>{
+          searchInput.value = product.title;
+          selectedProductId = product.id;
+          suggestionBox.innerHTML = "";
+          suggestionBox.classList.remove("active");
+        })
+        suggestionBox.appendChild(li)
+    }  
+  });
+    if(!matchFound){
+      suggestionBox.classList.remove("active");
+    }
+});
+
+
+// go to product details page if click on particular product
+
+searchInput.addEventListener("keydown", (e)=>{
+  if(e.key === "Enter"){
+    if(selectedProductId){
+      window.location.href = `product-details.html?id={selectedProductId}`
+    }
+  }
+})
