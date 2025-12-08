@@ -166,6 +166,7 @@ function getStarRating(count){
 }
 
 function displayTopProducts(productArray){
+  if (!topProductsRow) return;
 
   topProductsRow.innerHTML = "";
 
@@ -238,7 +239,8 @@ categorybtns.forEach((button)=>{
 // product searching on search bar
 
 const searchInput = document.querySelector("#navSearch");
-const suggestionBox = document.querySelector(".suggestions")
+const suggestionBox = document.querySelector(".suggestions");
+let selectedProductId = null;
 
 searchInput.addEventListener("input", ()=>{
   const searchInputValue = searchInput.value.toLowerCase();
@@ -251,6 +253,12 @@ searchInput.addEventListener("input", ()=>{
   let matchFound = false; // ✅ to track if any result exists
 
   productsData.forEach((product)=>{
+
+    //updating product id while typing
+    if(product.title.toLowerCase() === searchInput.value.toLowerCase()){
+      selectedProductId = product.id
+    }
+
     if(product.title.toLowerCase().includes(searchInputValue)){
         matchFound = true;
         const li = document.createElement("li");
@@ -272,12 +280,78 @@ searchInput.addEventListener("input", ()=>{
 });
 
 
-// go to product details page if click on particular product
+// go to product details page if click on particular product name from suggestion box or enter
 
 searchInput.addEventListener("keydown", (e)=>{
   if(e.key === "Enter"){
     if(selectedProductId){
-      window.location.href = `product-details.html?id={selectedProductId}`
+      window.location.href = `product-details.html?id=${selectedProductId}`
     }
   }
-})
+});
+
+//finding the product with their id and rendering into product details page
+
+const productId = new URLSearchParams(window.location.search).get("id");
+
+const productFoundById = productsData.find(p => p.id === Number(productId));
+
+const productDetailsRow = document.querySelector("#product-details-row");
+
+if(productFoundById && productDetailsRow){
+  productDetailsRow.innerHTML += `
+    <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="thumb-img">
+                        ${productFoundById.images.map(img => `<img src="${img}" alt="${productFoundById.title}">`).join("")}
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                    <div class="hero-img">
+                        <img src="${productFoundById.images[0]}" alt="${productFoundById.title}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+
+            <div class="product-details-desc">
+                <h4>${productFoundById.title}</h4>
+                <h6>${productFoundById.info}</h6>
+                <div class="prod-details-rating d-flex align-items-center ">
+                    ${getStarRating(productFoundById.rateCount)}
+                    <p>${productFoundById.ratings}</p>
+                </div>
+            </div>
+
+            <div class="product-details-price-sec row justify-content-between align-items-center">
+                <div class="col-md-8">
+                    <div class="product-details-price">
+                        <p><i class="fa-solid fa-indian-rupee-sign"></i>${productFoundById.finalPrice}<span><i class="fa-solid fa-indian-rupee-sign"></i>${productFoundById.originalPrice}</span></p>
+                    </div>
+                    <p class="prod-details-save">you save: <span><i class="fa-solid fa-indian-rupee-sign"></i>₹${productFoundById.originalPrice - productFoundById.finalPrice}</span><span>(33%)</span></p>
+                    <p class="prod-tax">(inclusive all taxes)</p>
+                </div>
+
+                <div class="col-md-4">
+                    <p class="prod-details-stock"><i class="fa-solid fa-check"></i> in stock</p>
+                </div>
+                
+            </div>
+
+            <div class="product-details-offer">
+                <h6>offers & discounts</h6>
+                <div class="payment-btn">
+                    <button>no cost EMI on credit cards</button>
+                    <button>pay later & avail cashbacks</button>
+                </div>
+            </div>
+
+            <button class="red-btn mt-md-5 mt-sm-3">add to cart</button>
+
+        </div>
+  `
+}
+
