@@ -432,3 +432,48 @@ function renderspecs(){
 
 }
 renderspecs();
+
+
+//dynamically rendering related product in the product details page
+
+// const productId = new URLSearchParams(window.location.search).get("id");
+
+// const productFoundById = productsData.find(p => p.id === Number(productId));
+
+const relatedProducts = productsData.filter((p)=> p.category === productFoundById.category && p.id !== productFoundById.id);
+
+const relatedProductRow = document.querySelector(".related-prod-row");
+
+function relatedProduct(){
+  if(!relatedProductRow) return;
+
+  relatedProductRow.innerHTML = "";
+
+  relatedProducts.forEach((p)=>{
+    relatedProductRow.innerHTML += `
+      <div class="col-lg-3 col-md-4">
+                <div class="top-product-content-box">
+                    <div class="top-product-img">
+                        <img src="${p.images[0]}">
+                    </div>
+                    <div class="top-product-details">
+                    <div class="rating-star d-flex align-items-center">
+                         ${getStarRating(p.rateCount)}
+                    </div>
+                    <div class="top-product-heading">
+                        <h5>${p.title}</h5>
+                        <p>${p.info}</p>
+                    </div>
+                    <div class="top-product-price">
+                        <p><i class="fa-solid fa-indian-rupee-sign"></i>${p.finalPrice}<span><i class="fa-solid fa-indian-rupee-sign"></i>${p.originalPrice}</span></p>
+                    </div>
+                    <button class="addcartbtn red-btn">add to cart</button>
+                    </div>
+                        
+                </div>
+            </div>
+    `
+  })
+
+}
+relatedProduct();
