@@ -1306,14 +1306,16 @@ footer{
 .reviewer-details p i{
     color:var(--red);
     font-size: 13px;
-    padding-right: 30px;
+    padding-right: 20px;
 }
 .reviewer-details p span{
-    padding-left: 20px;
-    border-left: 1px solid var(--discount-price-text-color);
     color: var(--discount-price-text-color);
     font-size: 14px;
     font-family: var(--roboto-font);
+}
+.reviewer-details p span:last-child{
+    border-left: 1px solid var(--discount-price-text-color);
+    padding-left: 15px;
 }
 .reviewer-msg {
     color: var(--discount-price-text-color);

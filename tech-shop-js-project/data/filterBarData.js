@@ -1,4 +1,4 @@
-export const sortMenu = [
+export  const sortMenu = [
     {
         id: 1,
         title: "Latest",

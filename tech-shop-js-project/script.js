@@ -1,4 +1,8 @@
 import productsData from "./data/productsData.js";
+import reviewData from "./data/reviewsData.js";
+// import filterData from "./data/filterBarData.js";
+// import serviceData from "./data/servicesData.js";
+// import footerData from "./data/footerData.js"
 
 
 
@@ -353,5 +357,41 @@ if(productFoundById && productDetailsRow){
 
         </div>
   `
-}
+};
+
+
+// dynamically rendering reviewdata from reviewData.js
+
+const reviewTabContainer = document.querySelector("#review-tab-container");
+
+function renderReviews(){
+  if(!reviewTabContainer) return;
+
+reviewTabContainer.innerHTML = "";
+
+reviewData.forEach((review)=>{
+  reviewTabContainer.innerHTML += `
+    <div class="review-tab-details">
+                <div class="row review-tab-row align-items-center">
+                <div class="col-md-1">
+                    <div class="review-user">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+                <div class="col-md-11">
+                    <div class="reviewer-details">
+                        <h6>${review.name}</h6>
+                        <p class="reviewer-rating">${getStarRating(review.rateCount)} <span>${review.date}</span></p>
+                    </div>
+                </div>
+                </div>
+                <div class="reviewer-msg">
+                    <p>${review.review}</p>
+                </div>
+            </div>
+  `
+})
+
+};
+renderReviews();
 
