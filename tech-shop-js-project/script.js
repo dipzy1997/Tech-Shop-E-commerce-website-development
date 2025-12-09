@@ -412,3 +412,23 @@ overviewTitleElm.forEach((elm)=>{
 overviewPara.textContent = productFoundById.info + " ";
 
 
+// dynamically rendering specification tab
+
+const specificationContainer = document.querySelector(".specification-container");
+
+function renderspecs(){
+  if(!specificationContainer || !productFoundById) return;
+
+  specificationContainer.innerHTML = "";
+
+  specificationContainer.innerHTML += `
+        <p>brand <span>${productFoundById.brand}</span></p>
+        <p>model <span>${productFoundById.title}</span></p>
+        <p>generic name <span>${productFoundById.category}</span></p>
+        <p>headphone type <span>${productFoundById.type}</span></p>
+        <p>connectivity <span>${productFoundById.connectivity}</span></p>
+        <p>microphone <span>yes</span></p>
+    `
+
+}
+renderspecs();
