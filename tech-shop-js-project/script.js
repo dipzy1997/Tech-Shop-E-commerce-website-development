@@ -395,3 +395,20 @@ reviewData.forEach((review)=>{
 };
 renderReviews();
 
+// dynamically rendering overview section from product details page
+
+// const productId = new URLSearchParams(window.location.search).get("id");
+
+// const productFoundById = productsData.find(p => p.id === Number(productId));
+
+// [declared them before in the line number : 299,301..toExponential.so use this code]
+
+const overviewTitleElm = document.querySelectorAll(".overview-title");
+const overviewPara = document.querySelector(".overview-para");
+
+overviewTitleElm.forEach((elm)=>{
+  elm.textContent = productFoundById.title + " ";
+})
+overviewPara.textContent = productFoundById.info + " ";
+
+
