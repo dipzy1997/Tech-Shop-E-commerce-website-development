@@ -1,8 +1,6 @@
 import productsData from "./data/productsData.js";
 import reviewData from "./data/reviewsData.js";
 import {sortMenu, brandsMenu, categoryMenu} from "./data/filterBarData.js";
-// import serviceData from "./data/servicesData.js";
-// import footerData from "./data/footerData.js"
 
 
 
@@ -85,8 +83,8 @@ $(document).ready(function (){
     loop:true,
     margin:10,
     dots:true,
-    autoplay:true,
-    autoplayTimeout:3000,
+    // autoplay:true,
+    // autoplayTimeout:3000,
     autoplayHoverPause:true,
     responsive:{
         0:{
