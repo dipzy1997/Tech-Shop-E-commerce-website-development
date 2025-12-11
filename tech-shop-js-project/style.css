@@ -1344,6 +1344,7 @@ footer{
 .filter-clear-btn{
     display: none;
 }
+
 .all-sort-sec h5, .all-filter-sec h5{
     color: var(--grey-text);
     font-size: 17px;
@@ -1360,12 +1361,18 @@ footer{
 .all-filter-sec ul{
     margin-top: 20px;
 }
+
 .all-sort-sec ul li, .all-filter-sec ul li, .all-filter-sec h6, .all-price-range h6{
     color: var(--grey-text);
     font-size: 14px;
     font-family: var(--roboto-font);
     text-transform: capitalize;
     margin-bottom: 10px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+.all-sort-sec ul li:hover{
+    color: var(--red);
 }
 .all-filter-sec h6, .all-price-range h6{
     font-weight: 600;

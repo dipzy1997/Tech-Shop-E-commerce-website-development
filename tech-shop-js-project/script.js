@@ -1,6 +1,6 @@
 import productsData from "./data/productsData.js";
 import reviewData from "./data/reviewsData.js";
-// import filterData from "./data/filterBarData.js";
+import {sortMenu, brandsMenu, categoryMenu} from "./data/filterBarData.js";
 // import serviceData from "./data/servicesData.js";
 // import footerData from "./data/footerData.js"
 
@@ -706,7 +706,7 @@ function renderAllProducts(products){
 
         // Use a wrapper div with a data-id attribute
         const productCard = document.createElement("div");
-        productCard.classList.add("col-md-4, col-sm-12");
+        productCard.classList.add("col-md-4", "col-sm-12");
         productCard.innerHTML = `
             <div class="top-product-content-box" data-id="${product.id}">
                 <div class="top-product-img">
@@ -739,6 +739,149 @@ function renderAllProducts(products){
         });
     });
 }
-renderAllProducts(productsData)
+renderAllProducts(productsData);
+
+// all product page functionalities with sort, filter, brandc category
+
+const sortList = document.querySelector(".all-sort-sec ul");
+const brandsList = document.querySelector(".all-filter-sec ul:nth-of-type(1)");
+const categoryList = document.querySelector(".all-filter-sec ul:nth-of-type(2)");
+
+// Render "Sort By" dynamically
+sortMenu.forEach(sort => {
+    const li = document.createElement("li");
+    li.textContent = sort.title;
+    li.dataset.id = sort.id;
+    sortList.appendChild(li);
+});
+
+// Render "Brands" dynamically
+brandsMenu.forEach(brand => {
+    const li = document.createElement("li");
+    li.innerHTML = `<label><input type="checkbox" value="${brand.label}"> ${brand.label}</label>`;
+    brandsList.appendChild(li);
+});
+
+// Render "Category" dynamically
+categoryMenu.forEach(cat => {
+    const li = document.createElement("li");
+    li.innerHTML = `<label><input type="checkbox" value="${cat.label}"> ${cat.label}</label>`;
+    categoryList.appendChild(li);
+});
+
+// adding price range , filter,sort functionalities
+
+const filterClearBtn = document.querySelector(".filter-clear-btn");
+const priceRange = document.querySelector("#price-range");
+const priceValue = document.getElementById("price-value");
+
+  // Filter by price range
+    const prices = productsData.map(p => p.finalPrice);
+    priceRange.min = Math.min(...prices);
+    priceRange.max = Math.max(...prices);
+    priceRange.value = priceRange.max;
+    priceValue.textContent = priceRange.value;
+
+    priceRange.addEventListener("input", () => {
+    priceValue.textContent = priceRange.value;
+    applyFiltersAndSort(); // re-render filtered products
+});
+
+// Function to apply filters & sorting
+function applyFiltersAndSort() {
+    let filteredProducts = [...productsData];
+
+    // Filter by brand
+    const selectedBrands = Array.from(brandsList.querySelectorAll("input:checked")).map(input => input.value);
+    if (selectedBrands.length) {
+        filteredProducts = filteredProducts.filter(p => selectedBrands.includes(p.brand));
+    }
+
+    // Filter by category
+    const selectedCategories = Array.from(categoryList.querySelectorAll("input:checked")).map(input => input.value);
+    if (selectedCategories.length) {
+        filteredProducts = filteredProducts.filter(p => selectedCategories.includes(p.category));
+    }
+
+    //filter by price range
+    const maxPrice = Number(priceRange.value);
+    filteredProducts = filteredProducts.filter(p => p.finalPrice <= maxPrice);
 
 
+    // Sort
+    const selectedSortLi = sortList.querySelector("li.selected");
+    if (selectedSortLi) {
+        const sortId = Number(selectedSortLi.dataset.id);
+        switch(sortId) {
+            case 1: // Latest
+                filteredProducts.sort((a,b) => b.id - a.id);
+                break;
+            case 2: // Top Rated
+                filteredProducts.sort((a,b) => b.rateCount - a.rateCount);
+                break;
+            case 3: // Price Low
+                filteredProducts.sort((a,b) => a.finalPrice - b.finalPrice);
+                break;
+            case 4: // Price High
+                filteredProducts.sort((a,b) => b.finalPrice - a.finalPrice);
+                break;
+        }
+    }
+
+     // Show clear button if any filter/sort is applied
+    if (selectedBrands.length || selectedCategories.length || maxPrice < Number(priceRange.max) || selectedSortLi) {
+        filterClearBtn.style.display = "block";
+    } else {
+        filterClearBtn.style.display = "none";
+    }
+
+    renderAllProducts(filteredProducts);
+    toggleClearBtn() 
+}
+
+// Event listeners
+brandsList.addEventListener("change", applyFiltersAndSort);
+categoryList.addEventListener("change", applyFiltersAndSort);
+priceRange.addEventListener("input", applyFiltersAndSort);
+
+// Sort click
+sortList.addEventListener("click", (e) => {
+    if (e.target.tagName === "LI") {
+        sortList.querySelectorAll("li").forEach(li => li.classList.remove("selected"));
+        e.target.classList.add("selected");
+        applyFiltersAndSort();
+    }
+});
+
+// Clear filters
+filterClearBtn.addEventListener("click", () => {
+    // Reset filters
+    brandsList.querySelectorAll("input").forEach(i => i.checked = false);
+    categoryList.querySelectorAll("input").forEach(i => i.checked = false);
+    
+    const prices = productsData.map(p => p.finalPrice);
+    const maximumPrice = Math.max(...prices);
+    priceRange.value = maximumPrice;
+    priceValue.textContent = maximumPrice;
+
+    sortList.querySelectorAll("li").forEach(li => li.classList.remove("selected"));
+
+    filterClearBtn.style.display = "none";
+
+    // Re-render products and hide button
+    applyFiltersAndSort();
+});
+
+//toggling clear filter buttoon
+function toggleClearBtn() {
+    const selectedBrands = Array.from(brandsList.querySelectorAll("input:checked")).map(i => i.value);
+    const selectedCategories = Array.from(categoryList.querySelectorAll("input:checked")).map(i => i.value);
+    const selectedSortLi = sortList.querySelector("li.selected");
+    const maxPriceValue = Number(priceRange.value);
+
+    if (selectedBrands.length || selectedCategories.length || maxPriceValue < Number(priceRange.max) || selectedSortLi) {
+        filterClearBtn.style.display = "block";
+    } else {
+        filterClearBtn.style.display = "none";
+    }
+}
