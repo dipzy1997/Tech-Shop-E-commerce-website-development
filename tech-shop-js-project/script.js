@@ -85,8 +85,8 @@ $(document).ready(function (){
     loop:true,
     margin:10,
     dots:true,
-    // autoplay:true,
-    // autoplayTimeout:4000,
+    autoplay:true,
+    autoplayTimeout:3000,
     autoplayHoverPause:true,
     responsive:{
         0:{
@@ -100,6 +100,19 @@ $(document).ready(function (){
         }
     }
 })
+});
+
+// clicking on shop now button in banner carousel go to that particular product details page
+
+const bannerShopBtns = document.querySelectorAll(".banner-shop-btn");
+
+bannerShopBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const id = btn.dataset.id;
+    if (id) {
+      window.location.href = `product-details.html?id=${id}`;
+    }
+  });
 });
 
 
