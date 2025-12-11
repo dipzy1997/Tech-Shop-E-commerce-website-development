@@ -1091,7 +1091,7 @@ footer{
     border-radius: 5px;
     padding: 10px;
 }
-.thumb-img-active{
+.thumb.active{
     border: 1px solid var(--grey-text);
 }
 .product-details-sec{

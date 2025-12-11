@@ -175,32 +175,33 @@ function displayTopProducts(productArray){
   topProductsRow.innerHTML = "";
 
   productArray.slice(0,11).forEach((product)=>{
-      const productHtmlStructure = `
-           <div class="col-lg-3 col-md-4">
-                        <div class="top-product-content-box">
-                            <div class="top-product-img">
-                                <img src="${product.images[0]}" alt="${product.title}">
-                            </div>
-                            <div class="top-product-details">
-                            <div class="rating-star d-flex align-items-center">
-                                ${getStarRating(product.rateCount)}
-                            </div>
-                            <div class="top-product-heading">
-                                <h5>${product.title}</h5>
-                                <p>${product.info}</p>
-                            </div>
-                            <div class="top-product-price">
-                                <p><i class="fa-solid fa-indian-rupee-sign"></i>${product.finalPrice}<span><i class="fa-solid fa-indian-rupee-sign"></i>${product.originalPrice}</span></p>
-                            </div>
-                            <button class="addcartbtn red-btn" data-id="${product.id}">add to cart</button>
-                            </div>
-                            
-                        </div>
-                    </div>
-      `
-      topProductsRow.innerHTML += productHtmlStructure;
-  })
+    const productCard = document.createElement("div");
+    productCard.classList.add("col-lg-3","col-md-4");
+    productCard.innerHTML = `
+        <div class="top-product-content-box" data-id="${product.id}">
+            <div class="top-product-img">
+                <img src="${product.images[0]}" alt="${product.title}">
+            </div>
+            <div class="top-product-details">
+                <div class="rating-star d-flex align-items-center">
+                    ${getStarRating(product.rateCount)}
+                </div>
+                <div class="top-product-heading">
+                    <h5>${product.title}</h5>
+                    <p>${product.info}</p>
+                </div>
+                <div class="top-product-price">
+                    <p><i class="fa-solid fa-indian-rupee-sign"></i>${product.finalPrice}<span><i class="fa-solid fa-indian-rupee-sign"></i>${product.originalPrice}</span></p>
+                </div>
+                <button class="addcartbtn red-btn" data-id="${product.id}">add to cart</button>
+            </div>
+        </div>
+    `;
 
+    topProductsRow.appendChild(productCard);
+  });
+
+  // browse more
   topProductsRow.innerHTML += `
      <div class="col-lg-3 col-md-4">
       <a href="./all-product.html">
@@ -209,11 +210,21 @@ function displayTopProducts(productArray){
           </div>
       </a>
     </div>
-  `
+  `;
 }
+displayTopProducts(productsData)
 
-displayTopProducts(productsData);
+if (topProductsRow) {
+  topProductsRow.addEventListener("click", (e) => {
+      if (e.target.classList.contains("addcartbtn")) return;
 
+      const card = e.target.closest(".top-product-content-box");
+      if (!card) return;
+
+      const id = card.dataset.id;
+      window.location.href = `product-details.html?id=${id}`;
+  });
+}
 
 //filter data based on category
 
@@ -242,8 +253,6 @@ categorybtns.forEach((button)=>{
 
 
 //add to cart button logic...(store item on local storage)
-
-// ----------------- CART LOGIC -----------------
 
 // Add to cart button (works anywhere)
 document.addEventListener("click", (e) => {
@@ -388,15 +397,15 @@ function updateCartProductCalculation() {
 
     const discount = originalTotal - finalTotal;
 
-    document.querySelector(".original-price span").innerHTML =
-        `<i class="fa-solid fa-indian-rupee-sign"></i>${originalTotal}`;
-    document.querySelector(".discount span").innerHTML =
-        `-<i class="fa-solid fa-indian-rupee-sign"></i>${discount}`;
-    document.querySelector(".total-price span").innerHTML =
-        `<i class="fa-solid fa-indian-rupee-sign"></i>${finalTotal}`;
+    const originalPriceEl = document.querySelector(".original-price span");
+    const discountEl = document.querySelector(".discount span");
+    const totalPriceEl = document.querySelector(".total-price span");
+    const orderSummaryEl = document.querySelector(".order-summary-sec h6");
 
-    document.querySelector(".order-summary-sec h6").textContent =
-        `order summary (${cart.length} items)`;
+    if (originalPriceEl) originalPriceEl.innerHTML = `<i class="fa-solid fa-indian-rupee-sign"></i>${originalTotal}`;
+    if (discountEl) discountEl.innerHTML = `-<i class="fa-solid fa-indian-rupee-sign"></i>${discount}`;
+    if (totalPriceEl) totalPriceEl.innerHTML = `<i class="fa-solid fa-indian-rupee-sign"></i>${finalTotal}`;
+    if (orderSummaryEl) orderSummaryEl.textContent = `order summary (${cart.length} items)`;
 }
 
 // Initialize cart on page load
@@ -464,22 +473,22 @@ searchInput.addEventListener("keydown", (e)=>{
 
 const productId = new URLSearchParams(window.location.search).get("id");
 
-const productFoundById = productsData.find(p => p.id === Number(productId));
+const productFoundById = productsData.find(p => p.id == productId);
 
 const productDetailsRow = document.querySelector("#product-details-row");
-
+ 
 if(productFoundById && productDetailsRow){
   productDetailsRow.innerHTML += `
     <div class="col-md-7">
             <div class="row">
                 <div class="col-md-2">
                     <div class="thumb-img">
-                        ${productFoundById.images.map((img,index) => `<img src="${img}" alt="${productFoundById.title}">`).join("")}
+                        ${productFoundById.images.map((img, index) =>`<img src="${img}" alt="${productFoundById.title}" class="thumb" data-index="${index}">`).join("")}
                     </div>
                 </div>
                 <div class="col-lg-10">
                     <div class="hero-img">
-                        <img src="${productFoundById.images[0]}" alt="${productFoundById.title}">
+                        <img id="main-img" src="${productFoundById.images[0]}" alt="${productFoundById.title}">
                     </div>
                 </div>
             </div>
@@ -523,8 +532,22 @@ if(productFoundById && productDetailsRow){
 
         </div>
   `
-};
+  const mainImg = document.getElementById("main-img");
+  const thumbnails = document.querySelectorAll(".thumb");
 
+  thumbnails.forEach((thumb) => {
+    thumb.addEventListener("click", () => {
+      thumbnails.forEach(t => t.classList.remove("active"))
+      thumb.classList.toggle("active");
+      mainImg.src = thumb.src; 
+    });
+  });
+  if (thumbnails.length > 0) {
+  thumbnails[0].classList.add("active");
+  }
+
+
+};
 
 // dynamically rendering reviewdata from reviewData.js
 
@@ -569,13 +592,18 @@ renderReviews();
 
 // [declared them before in the line number : 299,301...so reusing this code]
 
-const overviewTitleElm = document.querySelectorAll(".overview-title");
-const overviewPara = document.querySelector(".overview-para");
+if (productFoundById) {
+    const overviewTitleElm = document.querySelectorAll(".overview-title");
+    const overviewPara = document.querySelector(".overview-para");
 
-overviewTitleElm.forEach((elm)=>{
-  elm.textContent = productFoundById.title + " ";
-})
-overviewPara.textContent = productFoundById.info + " ";
+    overviewTitleElm.forEach((elm)=>{
+      elm.textContent = productFoundById.title + " ";
+    })
+
+    if(overviewPara) {
+        overviewPara.textContent = productFoundById.info + " ";
+    }
+}
 
 
 // dynamically rendering specification tab
@@ -605,8 +633,11 @@ renderspecs();
 // const productId = new URLSearchParams(window.location.search).get("id");
 
 // const productFoundById = productsData.find(p => p.id === Number(productId));
+let relatedProducts = [];
 
-const relatedProducts = productsData.filter((p)=> p.category === productFoundById.category && p.id !== productFoundById.id);
+if(productFoundById){
+  const relatedProducts = productsData.filter((p)=> p.category === productFoundById.category && p.id !== productFoundById.id);
+}
 
 const relatedProductRow = document.querySelector(".related-prod-row");
 
@@ -643,3 +674,58 @@ function relatedProduct(){
 
 }
 relatedProduct();
+
+// all-products html page showing all the product
+
+const allProductContainer = document.querySelector("#all-products-container")
+function renderAllProducts(products){
+    if(!allProductContainer) return;
+
+    allProductContainer.innerHTML = "";
+
+    products.forEach((product)=>{
+        const img = product.images && product.images[0] ? product.images[0] : "./images/default.png";
+        const info = product.info || "";
+        const title = product.title || "No title";
+        const finalPrice = product.finalPrice || 0;
+        const originalPrice = product.originalPrice || 0;
+        const rateCount = product.rateCount || 0;
+
+        // Use a wrapper div with a data-id attribute
+        const productCard = document.createElement("div");
+        productCard.classList.add("col-md-4, col-sm-12");
+        productCard.innerHTML = `
+            <div class="top-product-content-box" data-id="${product.id}">
+                <div class="top-product-img">
+                    <img src="${img}" alt="${title}">
+                </div>
+                <div class="top-product-details">
+                    <div class="rating-star d-flex align-items-center">
+                        ${getStarRating(rateCount)}
+                    </div>
+                    <div class="top-product-heading">
+                        <h5>${title}</h5>
+                        <p>${info}</p>
+                    </div>
+                    <div class="top-product-price">
+                        <p><i class="fa-solid fa-indian-rupee-sign"></i>${finalPrice}<span><i
+                          class="fa-solid fa-indian-rupee-sign"></i>${originalPrice}</span></p>
+                    </div>
+                    <button class="addcartbtn red-btn" data-id="${product.id}">add to cart</button>
+                </div>
+            </div>
+        `;
+
+        allProductContainer.appendChild(productCard);
+
+        // Add click listener on the card except the add to cart button
+        productCard.addEventListener("click", (e) => {
+            if (!e.target.classList.contains("addcartbtn")) {
+                window.location.href = `product-details.html?id=${product.id}`;
+            }
+        });
+    });
+}
+renderAllProducts(productsData)
+
+
