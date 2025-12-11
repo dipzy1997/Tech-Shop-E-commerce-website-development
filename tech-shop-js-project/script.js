@@ -192,7 +192,7 @@ function displayTopProducts(productArray){
                             <div class="top-product-price">
                                 <p><i class="fa-solid fa-indian-rupee-sign"></i>${product.finalPrice}<span><i class="fa-solid fa-indian-rupee-sign"></i>${product.originalPrice}</span></p>
                             </div>
-                            <button class="addcartbtn red-btn">add to cart</button>
+                            <button class="addcartbtn red-btn" data-id="${product.id}">add to cart</button>
                             </div>
                             
                         </div>
@@ -239,6 +239,172 @@ categorybtns.forEach((button)=>{
   })
   
 })
+
+
+//add to cart button logic...(store item on local storage)
+
+// ----------------- CART LOGIC -----------------
+
+// Add to cart button (works anywhere)
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("addcartbtn")) {
+        const id = Number(e.target.dataset.id);
+        const product = productsData.find(p => p.id === id);
+        if (!product) return;
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        const existProduct = cart.find(p => p.id === product.id);
+        if (existProduct) {
+            if (existProduct.quantity < 5) {
+                existProduct.quantity++;
+            } else {
+                alert("Maximum quantity reached!");
+            }
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCartCount();
+
+        e.target.textContent = "Added";
+        e.target.style.backgroundColor = "green";
+    }
+});
+
+// Update cart count in navbar
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartCountSpan = document.querySelector(".cart-icon span");
+
+    if (!cartCountSpan) return;
+
+    if (cart.length === 0) {
+        cartCountSpan.style.opacity = 0;
+    } else {
+        cartCountSpan.style.opacity = 1;
+        const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCountSpan.textContent = totalQty;
+    }
+}
+updateCartCount();
+
+// Show cart on cart page
+function showCart() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const prodAddedtoCartSec = document.querySelector(".prod-added-to-cart");
+    const emptyCartSec = document.querySelector(".empty-cart-sec");
+    const addedPrdBox = document.querySelector(".added-prod-box");
+
+    if (!prodAddedtoCartSec || !emptyCartSec || !addedPrdBox) return;
+
+    if (cart.length === 0) {
+        emptyCartSec.style.display = "flex";
+        prodAddedtoCartSec.classList.remove("active");
+        document.querySelector(".order-summary-sec h6").textContent = "order summary (0 items)";
+        return;
+    }
+
+    emptyCartSec.style.display = "none";
+    prodAddedtoCartSec.classList.add("active");
+
+    addedPrdBox.innerHTML = "";
+    cart.forEach(item => {
+        addedPrdBox.innerHTML += `
+            <div class="added-prod-details" data-id="${item.id}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="cart-prod-img">
+                            <img src="${item.images[0]}" alt="${item.title}">
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="prod-name">
+                            <h6>${item.title} ${item.info || ""} </h6>
+                            <p><i class="fa-solid fa-indian-rupee-sign"></i>${item.finalPrice}<span><i class="fa-solid fa-indian-rupee-sign"></i>${item.originalPrice}</span></p>
+                        </div>
+                        <div class="inc-dec-btn d-flex align-items-center">
+                            <button class="decrease"><i class="fa-solid fa-minus"></i></button>
+                            <h6>${item.quantity}</h6>
+                            <button class="increase"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="delete-btn"><i class="fa-solid fa-trash-can"></i></button> 
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    updateCartProductCalculation();
+}
+
+// Increase / Decrease / Delete buttons in cart
+document.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    const prodRow = btn.closest(".added-prod-details");
+    if (!prodRow) return;
+
+    const id = Number(prodRow.dataset.id);
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let item = cart.find(p => p.id === id);
+    if (!item) return;
+
+    if (btn.classList.contains("increase")) {
+        if (item.quantity < 5) item.quantity++;
+        else alert("Maximum quantity reached!");
+    }
+
+    if (btn.classList.contains("decrease")) {
+        if (item.quantity > 1) item.quantity--;
+        else cart = cart.filter(p => p.id !== id); // remove if 1
+    }
+
+    if (btn.classList.contains("delete-btn")) {
+        cart = cart.filter(p => p.id !== id);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    showCart();
+    updateCartCount();
+    updateCartProductCalculation();
+});
+
+
+// Update total / discount / original price
+function updateCartProductCalculation() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let originalTotal = 0;
+    let finalTotal = 0;
+
+    cart.forEach(item => {
+        originalTotal += item.originalPrice * item.quantity;
+        finalTotal += item.finalPrice * item.quantity;
+    });
+
+    const discount = originalTotal - finalTotal;
+
+    document.querySelector(".original-price span").innerHTML =
+        `<i class="fa-solid fa-indian-rupee-sign"></i>${originalTotal}`;
+    document.querySelector(".discount span").innerHTML =
+        `-<i class="fa-solid fa-indian-rupee-sign"></i>${discount}`;
+    document.querySelector(".total-price span").innerHTML =
+        `<i class="fa-solid fa-indian-rupee-sign"></i>${finalTotal}`;
+
+    document.querySelector(".order-summary-sec h6").textContent =
+        `order summary (${cart.length} items)`;
+}
+
+// Initialize cart on page load
+showCart();
+updateCartCount();
+updateCartProductCalculation();
+
+
 
 // product searching on search bar
 
@@ -308,7 +474,7 @@ if(productFoundById && productDetailsRow){
             <div class="row">
                 <div class="col-md-2">
                     <div class="thumb-img">
-                        ${productFoundById.images.map(img => `<img src="${img}" alt="${productFoundById.title}">`).join("")}
+                        ${productFoundById.images.map((img,index) => `<img src="${img}" alt="${productFoundById.title}">`).join("")}
                     </div>
                 </div>
                 <div class="col-lg-10">
@@ -353,7 +519,7 @@ if(productFoundById && productDetailsRow){
                 </div>
             </div>
 
-            <button class="red-btn mt-md-5 mt-sm-3">add to cart</button>
+            <button class="addcartbtn red-btn mt-md-5 mt-sm-3" data-id="${productFoundById.id}">add to cart</button>
 
         </div>
   `
@@ -401,7 +567,7 @@ renderReviews();
 
 // const productFoundById = productsData.find(p => p.id === Number(productId));
 
-// [declared them before in the line number : 299,301..toExponential.so use this code]
+// [declared them before in the line number : 299,301...so reusing this code]
 
 const overviewTitleElm = document.querySelectorAll(".overview-title");
 const overviewPara = document.querySelector(".overview-para");
@@ -467,7 +633,7 @@ function relatedProduct(){
                     <div class="top-product-price">
                         <p><i class="fa-solid fa-indian-rupee-sign"></i>${p.finalPrice}<span><i class="fa-solid fa-indian-rupee-sign"></i>${p.originalPrice}</span></p>
                     </div>
-                    <button class="addcartbtn red-btn">add to cart</button>
+                    <button class="addcartbtn red-btn data-id=${p.id}">add to cart</button>
                     </div>
                         
                 </div>

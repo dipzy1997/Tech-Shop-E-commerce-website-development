@@ -118,19 +118,17 @@ img{
     position: absolute;
     top: 0px;
     right: -10px;
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background-color: var(--red);
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    display: none;
+    opacity: 0;
 }
-.cart-icon span.add{
-    display: block;
-}
+
 /* search */
 .search-box {
   position: relative;
@@ -885,7 +883,12 @@ footer{
     background-color: var(--black);
     padding: 70px 0;
     position: relative;
-    z-index: 1;
+    display: none;
+    opacity: 0;
+}
+.prod-added-to-cart.active{
+    display: block;
+    opacity: 1;
 }
 .added-prod-box{
     background-color: var(--light-black);
@@ -1039,7 +1042,6 @@ footer{
     justify-content: center;
     flex-direction: column;
     position: fixed;
-    z-index: 99;
     width:100%;
     height: 100vh;
     top: 0;
