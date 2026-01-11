@@ -1,0 +1,217 @@
+:root{
+    --black:#141414;
+    --light-black:#161819;
+    --grey-text: #a9afc3;
+    --red:#ff0000;
+    --facebook:#1877F2;
+    --twitter: #1DA1F2;
+    --discount-price-text-color:#6c757d;
+    --roboto-font:'Roboto', sans-serif;
+}
+
+@media screen and (min-width:1601px) {
+    body{
+        max-width: 1500px !important;
+        margin: 0 auto !important;
+        background-color: var(--black);
+    }
+   
+}
+
+@media screen and (max-width:1601px) {
+    .container{
+        max-width: 90% !important;
+    }
+    section, .navbar{
+        /* transform: translateZ(0); */
+        backface-visibility: hidden;
+    }
+    .owl-carousel .owl-item img {
+    object-fit: contain;
+    }
+    
+}
+
+@media screen and (max-width:1399.98px){
+        .banner, .featured-product-sec  {
+    padding: 50px 0;
+}
+.banner-content h4 {
+    font-size: 40px;
+}
+.banner-content h6 {
+    font-size: 20px;
+}
+.banner-img {
+    height: 500px;
+}
+.banner-slide h1 {
+    font-size: 150px;
+    left: -30px;
+}
+.top-product-heading h5 {
+    font-size: 20px;
+}
+.top-product-heading p {
+    font-size: 14px;
+}
+.red-btn {
+    padding: 7px 15px;
+}
+.top-product-sec {
+    padding: 50px;
+}
+
+
+}
+@media screen and (max-width:1199.98px){
+ .banner, .featured-product-sec,.top-product-sec, .advantage-sec  {
+    padding: 30px 0;
+}
+.banner-content h4 {
+    font-size: 35px;
+}
+.banner-img {
+    height: 450px;
+}
+.feature-heading h3, .top-sec-heading h3 , .advantage-heading h3{
+    font-size: 28px;
+     margin-bottom: 50px;
+}
+.top-product-heading h5 {
+    font-size: 16px;
+}
+.top-product-price p {
+    font-size: 20px;
+   
+}
+.top-product-price p i{
+    font-size: 20px;
+}
+.browse-box p{
+    font-size: 28px;
+}
+.a-img i {
+    font-size: 30px !important;
+}
+.adv-content h6 {
+    font-size: 16px;
+}
+.adv-content p {
+    font-size: 13px;
+}
+
+
+}
+
+@media screen and (max-width:991.98px){
+    /* navbar */
+       .navbar.fixed {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+  }
+    button.navbar-toggler{
+        position: absolute;
+        right: 50px !important;
+        top: 14px !important;
+        border: none;
+    }
+   .navbar-brand img{
+    width: 100px;
+   }
+  .navbar-toggler-icon {
+    width: 35px !important;
+    background-color: transparent;
+    border: 1px solid var(--grey-text);
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+}
+ 
+.navbar-collapse {
+    width: 200px;
+    background: var(--light-black);
+    position: absolute;
+    right: 50px;
+    top: 65px;
+    z-index: 999;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px gray;
+}
+   .navbar-toggler:focus{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+   }
+   .navbar-nav {
+    text-align: left;
+    display: flex;
+    align-items: flex-start !important;
+}
+.navbar-nav .nav-item {
+    margin-left: 0;
+    margin-bottom: 10px;
+}
+.search-container {
+    right: 0;
+    width: 400px;
+}
+.banner-content h4 {
+    font-size: 27px;
+}
+.banner-content h6 {
+    font-size: 18px;
+}
+.banner-slide h1 {
+    font-size: 100px;
+}
+.advantage-sec .row .col-md-4{
+    width: 50%;
+}
+.advantage-box{
+    margin-bottom: 30px;
+}
+footer .row .col-md-3{
+    width: 50%;
+    margin-bottom: 10px;
+}
+.f-col3 h5, .f-col4 h5 {
+    margin-left: 0;
+}
+.f-col3 ul, .f-col4 ul {
+    margin-left: 0;
+}
+
+
+}
+
+
+@media screen and (max-width:767.98px) {
+footer .row .col-md-3{
+    width: 100%;
+    
+}
+.f-col2 h5,.f-col2 ul{
+     margin-left: 0;
+}
+.banner-img {
+    height: 300px;
+}
+.banner-con-col{
+    order: 2 !important;
+}
+.banner-img-col{
+    order: 1 !important;
+}
+.category-btns button {
+    font-size: 14px;
+}
+.redbtn-active {
+    padding: 5px 10px;
+    font-size: 14px !important;
+}
+
+
+}
+
